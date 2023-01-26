@@ -3,55 +3,94 @@
         xmlns:vm="using:SweetSaber.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" Width="1400" Height="800"
+        mc:Ignorable="d" Width="800" Height="450"
         x:Class="SweetSaber.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="SweetSaber"
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
-        Background="Transparent" FontFamily="Verdana" FontWeight="Normal">
+        Background="Transparent" FontFamily="Verdana" FontWeight="Thin">
     
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
 	<Window.Resources>
-        <SolidColorBrush x:Key="TitleBarBrush" Color="#303040EE" />
+        <SolidColorBrush x:Key="TitleBarBrush" Color="#99000007" />
+		<SolidColorBrush x:Key="LeftBarBackgroundBrush" Color="#FB1c1c20" />
+        <SolidColorBrush x:Key="VersionBarBackgroundBrush" Color="#9333" />
+        <SolidColorBrush x:Key="TabControlBackgroundBrush" Color="#99000007" />
     </Window.Resources>
 
-	<Grid RowDefinitions="31, 1*">
-		<Rectangle HorizontalAlignment="Stretch" Height="31" Fill="{StaticResource TitleBarBrush}" IsHitTestVisible="False"></Rectangle>
+	<Grid ColumnDefinitions="190, 1*" HorizontalAlignment="Stretch">
         <Grid 
-            Grid.Row="1"
-            VerticalAlignment="Stretch"
-            Background="#1f1f2390"
-            ShowGridLines="False"
-            ColumnDefinitions="190, 1*">
-			<Grid RowDefinitions="1*, 60" ShowGridLines="True" Background="#1c1c20ff">
-                <ListBox Items="{Binding Tabs}" SelectedIndex="{Binding TabIndex}" Background="Transparent">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}" FontSize="24" HorizontalAlignment="Center"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-				<StackPanel Orientation="Vertical" Grid.Row="1" Margin="10, 15">
-                    <TextBlock Text="Game ver: X.XX.XX" VerticalAlignment="Stretch" FontSize="16"/>
-                    <TextBlock Text="Loader ver: X.XX.XX" VerticalAlignment="Stretch" FontSize="16"/>
+            RowDefinitions="64, 10, 1*, 35" 
+            ShowGridLines="False" 
+            Background="{StaticResource LeftBarBackgroundBrush}">
+			<Grid 
+                ColumnDefinitions="1*,1.8*" 
+                ShowGridLines="False">
+				<Rectangle Width="32" Height="32" Fill="White"/>
+				<StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <TextBlock Text="Sweet Beat Saber Mod Manager" ClipToBounds="True" TextWrapping="Wrap" FontSize="12" Foreground="#EEE"/>
+                    <TextBlock Text="by SweetDevs" ClipToBounds="True" TextWrapping="Wrap" FontSize="9" Foreground="#888"/>
                 </StackPanel>
 			</Grid>
+            <Border Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="2" CornerRadius="10" Margin="3,0" Background="#555"/>
+            <ListBox Grid.Row="2" Items="{Binding Tabs}" SelectedIndex="{Binding TabIndex}" Background="Transparent">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="Auto, 1*" Margin="9,0,0,0">
+                            <Rectangle Width="24" Height="24" Fill="White"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="16" FontWeight="Normal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0" Foreground="#EEE"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+				<ListBox.Styles>
+                    <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="#19ccccff"/>
+                    </Style>
+                    <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="#25ccccff"/>
+                    </Style>
+                    <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="#32ccccff"/>
+                    </Style>
+                    
+                    
+                </ListBox.Styles>
+            </ListBox>
+            <Grid RowDefinitions="1*,1*" Grid.Row="3" VerticalAlignment="Stretch" Background="{StaticResource VersionBarBackgroundBrush}">
+                <TextBlock Grid.Row="0" Text="Game ver: X.XX.XX" VerticalAlignment="Stretch" TextAlignment="Center" FontSize="10" Margin="3" Foreground="#AAA"/>
+                <TextBlock Grid.Row="1" Text="Loader ver: X.XX.XX" VerticalAlignment="Stretch" TextAlignment="Center" FontSize="10" Margin="0" Foreground="#AAA"/>
+            </Grid>
+        </Grid>
 
-			<TabControl Grid.Column="1" SelectedIndex="{Binding TabIndex}">
-			    <TabControl.Styles>
-				    <Style Selector="ItemsPresenter#PART_ItemsPresenter">
+		<Grid Grid.Column="1" RowDefinitions="31, 1*" HorizontalAlignment="Stretch">
+            <Rectangle HorizontalAlignment="Stretch" Height="31" Fill="{StaticResource TitleBarBrush}" IsHitTestVisible="False"></Rectangle>
+			<TabControl Grid.Row="1" SelectedIndex="{Binding TabIndex, Mode=OneWay}" Background="{StaticResource TabControlBackgroundBrush}">
+                <TabControl.Styles>
+                    <Style Selector="ItemsPresenter#PART_ItemsPresenter">
                         <Setter Property="IsVisible" Value="False"/>
                     </Style>
                 </TabControl.Styles>
-                <TabItem/>
-                <TabItem/>
-                <TabItem/>
+                <TabItem>
+                    <TextBlock Text="This is start"/>
+                </TabItem>
+
+                <TabItem>
+                    <TextBlock Text="This is mods"/>
+                </TabItem>
+
+                <TabItem>
+                    <TextBlock Text="This is settings"/>
+                </TabItem>
+
+                <TabItem>
+                    <TextBlock Text="This is about"/>
+                </TabItem>
             </TabControl>
-        </Grid>
+		</Grid>
     </Grid>
 
 </Window>

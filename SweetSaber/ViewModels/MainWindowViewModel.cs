@@ -11,9 +11,10 @@ namespace SweetSaber.ViewModels
 
         public static List<VerticalTab> Tabs => new()
         {
-            new VerticalTab { Name = "start" },
-            new VerticalTab { Name = "mods" },
-            new VerticalTab { Name = "settings" }
+            new VerticalTab { Name = "Start" },
+            new VerticalTab { Name = "Mods" },
+            new VerticalTab { Name = "Settings" },
+            new VerticalTab { Name = "About" },
         };
 
         public int TabIndex
