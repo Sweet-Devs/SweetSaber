@@ -10,30 +10,48 @@
         TransparencyLevelHint="AcrylicBlur"
         ExtendClientAreaToDecorationsHint="True"
         Background="Transparent" FontFamily="Verdana" FontWeight="Normal">
-
+    
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-	<Grid 
-        Background="#1f1f2390"
-        ShowGridLines="False"
-        ColumnDefinitions="1*, 6*"
-        Margin="0,31,0,0">
-		<ListBox Grid.Column="0" Background="#1c1c20ff" Items="{Binding Tabs}" SelectedIndex="{Binding TabIndex}">
-			<ListBox.ItemTemplate>
-				<DataTemplate>
-                    <TextBlock Text="{Binding Name}" FontSize="32" HorizontalAlignment="Center"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-			<ListBox.Styles>
-            </ListBox.Styles>
-        </ListBox>
-		<TabControl Grid.Column="1" SelectedIndex="{Binding TabIndex}">
-            <TabItem/>
-            <TabItem/>
-            <TabItem/>
-        </TabControl>
+	<Window.Resources>
+        <SolidColorBrush x:Key="TitleBarBrush" Color="#303040EE" />
+    </Window.Resources>
+
+	<Grid RowDefinitions="31, 1*">
+		<Rectangle HorizontalAlignment="Stretch" Height="31" Fill="{StaticResource TitleBarBrush}" IsHitTestVisible="False"></Rectangle>
+        <Grid 
+            Grid.Row="1"
+            VerticalAlignment="Stretch"
+            Background="#1f1f2390"
+            ShowGridLines="False"
+            ColumnDefinitions="190, 1*">
+			<Grid RowDefinitions="1*, 60" ShowGridLines="True" Background="#1c1c20ff">
+                <ListBox Items="{Binding Tabs}" SelectedIndex="{Binding TabIndex}" Background="Transparent">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" FontSize="24" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+				<StackPanel Orientation="Vertical" Grid.Row="1" Margin="10, 15">
+                    <TextBlock Text="Game ver: X.XX.XX" VerticalAlignment="Stretch" FontSize="16"/>
+                    <TextBlock Text="Loader ver: X.XX.XX" VerticalAlignment="Stretch" FontSize="16"/>
+                </StackPanel>
+			</Grid>
+
+			<TabControl Grid.Column="1" SelectedIndex="{Binding TabIndex}">
+			    <TabControl.Styles>
+				    <Style Selector="ItemsPresenter#PART_ItemsPresenter">
+                        <Setter Property="IsVisible" Value="False"/>
+                    </Style>
+                </TabControl.Styles>
+                <TabItem/>
+                <TabItem/>
+                <TabItem/>
+            </TabControl>
+        </Grid>
     </Grid>
 
 </Window>
