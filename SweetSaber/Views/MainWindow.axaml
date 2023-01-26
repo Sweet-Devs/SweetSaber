@@ -3,15 +3,37 @@
         xmlns:vm="using:SweetSaber.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" Width="1400" Height="800"
         x:Class="SweetSaber.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="SweetSaber">
+        Title="SweetSaber"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True"
+        Background="Transparent" FontFamily="Verdana" FontWeight="Normal">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	<Grid 
+        Background="#1f1f2390"
+        ShowGridLines="False"
+        ColumnDefinitions="1*, 6*"
+        Margin="0,31,0,0">
+		<ListBox Grid.Column="0" Background="#1c1c20ff" Items="{Binding Tabs}" SelectedIndex="{Binding TabIndex}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+                    <TextBlock Text="{Binding Name}" FontSize="32" HorizontalAlignment="Center"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+			<ListBox.Styles>
+            </ListBox.Styles>
+        </ListBox>
+		<TabControl Grid.Column="1" SelectedIndex="{Binding TabIndex}">
+            <TabItem/>
+            <TabItem/>
+            <TabItem/>
+        </TabControl>
+    </Grid>
 
 </Window>
