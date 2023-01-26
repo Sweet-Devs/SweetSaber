@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace SweetSaber
+namespace SweetSaber.Views
 {
     public partial class MainWindow : Window
     {
