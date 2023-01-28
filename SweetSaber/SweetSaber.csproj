@@ -10,6 +10,7 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
     <None Remove=".gitignore" />
+    <None Remove="Assets\icons8-filter-96.png" />
   </ItemGroup>
   <ItemGroup>
 	<!--This helps with theme dll-s trimming.
@@ -28,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Controls\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SweetSaber.BeatMods\SweetSaber.BeatMods.csproj" />

@@ -1,17 +1,170 @@
+
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:SweetSaber.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" Width="800" Height="450"
         x:Class="SweetSaber.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
-        Title="SweetSaber">
-
+        Title="SweetSaber"
+        TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True"
+        Background="Transparent" FontFamily="Verdana" FontWeight="Thin">
+    
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+	<Window.Resources>
+        <SolidColorBrush x:Key="TitleBarBrush" Color="#99101020" />
+		<SolidColorBrush x:Key="LeftBarBackgroundBrush" Color="#FB1c1c20" />
+        <SolidColorBrush x:Key="VersionBarBackgroundBrush" Color="#9333" />
+        <SolidColorBrush x:Key="TabControlBackgroundBrush" Color="#99000007" />
+    </Window.Resources>
+
+	<Grid ColumnDefinitions="190, 1*" HorizontalAlignment="Stretch">
+        <Grid 
+            RowDefinitions="64, 10, 1*, 35" 
+            ShowGridLines="False" 
+            Background="{StaticResource LeftBarBackgroundBrush}">
+			<Grid 
+                ColumnDefinitions="1*,1.8*" 
+                ShowGridLines="False">
+				<Rectangle Width="32" Height="32" Fill="White"/>
+				<StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <TextBlock Text="SweetSaber     Mod Manager" ClipToBounds="True" TextWrapping="Wrap" FontSize="12" Foreground="#EEE"/>
+                    <TextBlock Text="by Sweet-Devs" ClipToBounds="True" TextWrapping="Wrap" FontSize="9" Foreground="#888"/>
+                </StackPanel>
+			</Grid>
+            <Border Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="2" CornerRadius="10" Margin="3,0" Background="#555"/>
+            <ListBox Grid.Row="2" Items="{Binding Tabs}" SelectedIndex="{Binding TabIndex}" Background="Transparent">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="Auto, 1*" Margin="9,0,0,0">
+                            <Rectangle Width="24" Height="24" Fill="White"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="16" FontWeight="Normal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0" Foreground="#EEE"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+				<ListBox.Styles>
+                    <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="#19ccccff"/>
+                    </Style>
+                    <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="#25ccccff"/>
+                    </Style>
+                    <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                        <Setter Property="Background" Value="#32ccccff"/>
+                    </Style>
+                    
+                    
+                </ListBox.Styles>
+            </ListBox>
+            <Grid RowDefinitions="1*,1*" Grid.Row="3" VerticalAlignment="Stretch" Background="{StaticResource VersionBarBackgroundBrush}">
+                <TextBlock Grid.Row="0" Text="{Binding ApplicationVersion, StringFormat='App ver: {0}'}" VerticalAlignment="Stretch" TextAlignment="Center" FontSize="10" Margin="3" Foreground="#AAA"/>
+                <TextBlock Grid.Row="1" Text="Game ver: X.XX.XX" VerticalAlignment="Stretch" TextAlignment="Center" FontSize="10" Foreground="#AAA"/>
+            </Grid>
+        </Grid>
+
+		<Grid Grid.Column="1" RowDefinitions="31, 1*, 35" HorizontalAlignment="Stretch">
+            <Rectangle HorizontalAlignment="Stretch" Height="31" Fill="{StaticResource TitleBarBrush}" IsHitTestVisible="False"></Rectangle>
+			<TabControl Grid.Row="1" SelectedIndex="{Binding TabIndex, Mode=OneWay}" Background="{StaticResource TabControlBackgroundBrush}">
+                <TabControl.Styles>
+                    <Style Selector="ItemsPresenter#PART_ItemsPresenter">
+                        <Setter Property="IsVisible" Value="False"/>
+                    </Style>
+                </TabControl.Styles>
+                <TabItem>
+					<Grid
+                        RowDefinitions="50, 1*"
+                        ShowGridLines="True">
+						<ComboBox SelectedIndex="0" Items="{Binding Versions}" HorizontalAlignment="Stretch" Margin="0, 10">
+							<ComboBox.Styles>
+								<Style Selector="ItemsPresenter#PART_ItemsPresenter">
+                                    <Setter Property="IsVisible" Value="True"/>
+                                </Style>
+                            </ComboBox.Styles>
+                        </ComboBox>
+                    </Grid>
+                </TabItem>
+  
+                <TabItem>
+					<Grid 
+                        RowDefinitions="64, 1*"
+                        ShowGridLines="False" ClipToBounds="False">
+						<Grid ClipToBounds="False" ShowGridLines="False" ColumnDefinitions="1*, 52">
+                            <TextBox Grid.Row="0" Margin="0, 16,0,16" VerticalContentAlignment="Center" Text="{Binding SearchQuery}" Watermark="Search for mods..."/>
+							<Button Grid.Column="1"
+                                    Grid.Row="0"
+                                    Width="32"
+                                    Height="32"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Name="FilterButton"
+                                    Background="#DD1c1c20"
+                                    Command="{Binding TogglePopup}"
+                                    >
+                                <Panel>
+                                    <Image Source="avares://SweetSaber/Assets/icons8-filter-96.png" Width="20"
+                                           Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                </Panel>
+                            </Button>
+                            <Grid
+                                Name="FilterPopup"
+                                Grid.Column="1"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Right"
+                                Background="#DD1c1c20"
+                                ZIndex="1"
+                                Height="104"
+                                ClipToBounds="False"
+                                Classes.Open="{Binding FilterPopupVisible}"
+                                IsVisible="{Binding FilterPopupVisible}"
+                                RowDefinitions="32,auto,auto,auto,auto,auto"
+                                ColumnDefinitions="1*,32">
+                                <Grid.RenderTransform>
+                                    <TranslateTransform X="-10" Y="48"/>
+                                </Grid.RenderTransform>
+								<Grid.Styles>
+                                    <Style Selector="Grid#FilterPopup.Open">
+                                        <Style.Animations>
+                                            <Animation FillMode="Forward" Duration="0:0:0.02">
+                                                <KeyFrame Cue="0%">
+                                                    <Setter Property="Width" Value="0"/>
+                                                </KeyFrame>
+                                                <KeyFrame Cue="100%">
+                                                    <Setter Property="Width" Value="150"/>
+                                                </KeyFrame>
+                                            </Animation>
+                                        </Style.Animations>
+                                    </Style>
+                                </Grid.Styles>
+                                <TextBlock Text="Filters" VerticalAlignment="Center" Margin="10,0"/>
+
+								<CheckBox Grid.Column="0" Grid.Row="1" Margin="10,0,0,0">
+                                    <TextBlock Text="Approved" Margin="0,0,0,2" VerticalAlignment="Center"/>
+								</CheckBox>
+                                <CheckBox Grid.Column="0" Grid.Row="2" Margin="10,0,0,0">
+                                    <TextBlock Text="Inactive" Margin="0,0,0,2" VerticalAlignment="Center"/>
+                                </CheckBox>
+                            </Grid>
+						</Grid>
+					</Grid>
+                </TabItem>
+
+                <TabItem>
+                    <TextBlock Text="This is settings"/>
+                </TabItem>
+
+                <TabItem>
+                    <TextBlock Text="This is about"/>
+                </TabItem>
+            </TabControl>
+            <Grid RowDefinitions="1*" Grid.Row="2" VerticalAlignment="Stretch" Background="{StaticResource VersionBarBackgroundBrush}">
+                <TextBlock Grid.Row="0" Text="{Binding Status}" VerticalAlignment="Center" TextAlignment="Left" FontSize="12" Margin="12,0" Foreground="#AAA"/>
+            </Grid>
+        </Grid>
+    </Grid>
 
 </Window>

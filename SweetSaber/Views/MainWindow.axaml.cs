@@ -1,5 +1,6 @@
 using Avalonia.Controls;
-using SweetSaber.Common;
+using SweetSaber.ViewModels;
+using System;
 
 namespace SweetSaber.Views
 {
@@ -8,7 +9,16 @@ namespace SweetSaber.Views
         public MainWindow()
         {
             InitializeComponent();
-            var location = BeatSaberFinder.TryFind();
+        }
+
+        protected override void OnOpened(EventArgs e)
+        {
+            base.OnOpened(e);
+
+            if (DataContext is MainWindowViewModel vm)
+            {
+                vm.WindowOpened(this, e);
+            }
         }
     }
 }
