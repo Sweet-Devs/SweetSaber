@@ -1,6 +1,9 @@
 using Avalonia.Controls;
 using SweetSaber.ViewModels;
 using System;
+using Avalonia.Input;
+using SweetSaber.BeatMods.Models;
+using SweetSaber.Models;
 
 namespace SweetSaber.Views
 {
@@ -17,7 +20,43 @@ namespace SweetSaber.Views
 
             if (DataContext is MainWindowViewModel vm)
             {
-                vm.WindowOpened(this, e);
+                vm.LoadData(this, e);
+            }
+        }
+
+        private void ModActionPic_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+        {
+            try
+            {
+                var listBoxItem = (ListBoxItem)((Control?)sender)?.Parent?.Parent!;
+                var mod = (SweetMod?)listBoxItem.DataContext;
+
+                if (DataContext is MainWindowViewModel vm)
+                {
+                    vm.ApplyModAction(mod);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void ModExpandPic_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+        {
+            try
+            {
+                var listBoxItem = (ListBoxItem)((Control?)sender)?.Parent?.Parent!;
+                var mod = (SweetMod?)listBoxItem.DataContext;
+
+                if (DataContext is MainWindowViewModel vm)
+                {
+                    vm.ExpandMod(mod);
+                }
+            }
+            catch
+            {
+
             }
         }
     }

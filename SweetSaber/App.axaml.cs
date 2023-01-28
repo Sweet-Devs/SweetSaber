@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform;
 using SweetSaber.ViewModels;
 using SweetSaber.Views;
 
@@ -13,6 +14,7 @@ namespace SweetSaber
         public static int BuildVer = 1;
 
         public static string VerString => $"{MajorVer}.{MinorVer:00}.{BuildVer:0000}";
+        public static IAssetLoader? AssetLoader => AvaloniaLocator.Current.GetService<IAssetLoader>();
 
         public override void Initialize()
         {
