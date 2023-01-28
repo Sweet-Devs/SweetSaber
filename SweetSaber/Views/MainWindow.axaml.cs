@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using SweetSaber.Common;
 
 namespace SweetSaber.Views
 {
@@ -7,6 +8,7 @@ namespace SweetSaber.Views
         public MainWindow()
         {
             InitializeComponent();
+            var location = BeatSaberFinder.TryFind();
         }
     }
 }
