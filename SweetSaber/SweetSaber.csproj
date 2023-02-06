@@ -12,6 +12,7 @@
     <None Remove=".gitignore" />
     <None Remove="Assets\download.png" />
     <None Remove="Assets\icons8-filter-96.png" />
+    <None Remove="Assets\icons8-paperclip-100.png" />
     <None Remove="Assets\right-arrow.png" />
     <None Remove="Assets\trash.png" />
     <None Remove="Assets\updating.png" />

@@ -4,7 +4,7 @@
         xmlns:vm="using:SweetSaber.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" Width="800" Height="450"
+        mc:Ignorable="d" Width="800" Height="500"
         x:Class="SweetSaber.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="SweetSaber"
@@ -30,14 +30,19 @@
     </Window.Styles>
 
 	<Grid ColumnDefinitions="190, 1*" HorizontalAlignment="Stretch">
+        
+        <!-- Left Sidebar Grid -->
         <Grid 
-            RowDefinitions="64, 10, 1*, 35" 
-            ShowGridLines="False" 
+            RowDefinitions="64, 10, 1*, 190, 35" 
+            ShowGridLines="True" 
             Background="{StaticResource LeftBarBackgroundBrush}">
-			<Grid 
+
+            <Grid 
                 ColumnDefinitions="1*,1.8*" 
                 ShowGridLines="False">
-				<Rectangle Width="32" Height="32" Fill="White"/>
+                <Border Width="32" Height="32">
+                    <Image Source="avares://SweetSaber/Assets/cake.png" Stretch="Uniform"/>
+                </Border>
 				<StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
                     <TextBlock Text="SweetSaber     Mod Manager" ClipToBounds="True" TextWrapping="Wrap" FontSize="12" Foreground="#EEE"/>
                     <TextBlock Text="by Sweet-Devs" ClipToBounds="True" TextWrapping="Wrap" FontSize="9" Foreground="#888"/>
@@ -67,12 +72,37 @@
                     
                 </ListBox.Styles>
             </ListBox>
-            <Grid RowDefinitions="1*,1*" Grid.Row="3" VerticalAlignment="Stretch" Background="{StaticResource VersionBarBackgroundBrush}">
+            
+            <Border Grid.Row="3" Margin="16"
+                    DragDrop.AllowDrop="True" CornerRadius="3" Name="DropBorder">
+				<Border.Styles>
+					<Style Selector="Border.Dragging">
+                        <Setter Property="Background" Value="#7777"/>
+                    </Style>
+                    <Style Selector="Border">
+                        <Setter Property="Background" Value="#7555"/>
+                    </Style>
+                </Border.Styles>
+
+				<StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image Source="avares://SweetSaber/Assets/icons8-paperclip-100.png" Stretch="Uniform" Height="80"/>
+
+                    <TextBlock
+                        Name="DropState"
+                        TextWrapping="Wrap"
+                        TextAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="Drop .zip of a mod here"/>
+				</StackPanel>
+            </Border>
+            
+            <Grid RowDefinitions="1*,1*" Grid.Row="4" VerticalAlignment="Stretch" Background="{StaticResource VersionBarBackgroundBrush}">
                 <TextBlock Grid.Row="0" Text="{Binding ApplicationVersion, StringFormat='App ver: {0}'}" VerticalAlignment="Stretch" TextAlignment="Center" FontSize="10" Margin="3" Foreground="#AAA"/>
                 <TextBlock Grid.Row="1" Text="Game ver: X.XX.XX" VerticalAlignment="Stretch" TextAlignment="Center" FontSize="10" Foreground="#AAA"/>
             </Grid>
         </Grid>
-
+        
+        <!-- Main Grid -->
 		<Grid Grid.Column="1" RowDefinitions="31, 1*, 35" HorizontalAlignment="Stretch">
             <Rectangle HorizontalAlignment="Stretch" Height="31" Fill="{StaticResource TitleBarBrush}" IsHitTestVisible="False"></Rectangle>
 			<TabControl Grid.Row="1" SelectedIndex="{Binding TabIndex, Mode=OneWay}" Background="{StaticResource TabControlBackgroundBrush}">
@@ -106,7 +136,7 @@
                                         <Setter Property="Padding" Value="0"/>
                                     </Style>
                                     <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
-                                        <Setter Property="Background" Value="#555"/>
+                                        <Setter Property="Background" Value="#19ffffff"/>
                                     </Style>
                                 </ListBox.Styles>
                                 <ListBox.ItemTemplate>
@@ -116,8 +146,14 @@
                                             ClipToBounds="True"
                                             ColumnDefinitions="10, 1*, auto, 28"
                                             RowDefinitions="auto, auto"
-                                            Margin="0,0">
-                                            
+                                            Margin="0,0"
+                                            Classes.Expanded="{Binding IsExpanded}"
+                                            Classes.Retracted="{Binding IsExpanded, Converter={x:Static BoolConverters.Not}}">
+                                            <Grid.Styles>
+                                                <Style Selector="Grid.Expanded">
+                                                    <Setter Property="Background" Value="#19ffffff"/>
+                                                </Style>
+                                            </Grid.Styles>
                                             <Border Grid.Row="0" Grid.Column="0"
                                                     CornerRadius="5"
                                                     Name="ModPanelArrow"
@@ -228,8 +264,8 @@
                                                 Grid.ColumnSpan="4" Grid.Column="0"
                                                 Classes.Expanded="{Binding IsExpanded}"
                                                 Classes.Retracted="{Binding IsExpanded, Converter={x:Static BoolConverters.Not}}"
-                                                Background="#5333"
                                                 Margin="0,0,0,0"
+                                                Background="Transparent"
                                                 Height="0">
                                                 <Grid.Styles>
                                                     <Style Selector="Grid.Expanded">
